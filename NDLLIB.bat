@@ -7,17 +7,21 @@ if /i "%arg1%"=="list" goto :list
 if /i "%arg1%"=="remove" goto :remove
 if /i "%arg1%"=="update" goto :update
 
-echo 	Add [Library Name]; 		Adds source library to the index
-echo 	Get [Library Name]; 		Adds the target library to the current directory under folder 'lib'
-echo 	Remove [Library Name]; 		Removes the target library from the index
-echo 	List; 				Lists the libraries currently indexed
-echo 	Update;				Updates libraries within the current directory's 'lib' folder
+echo 	Add [Library Name] [New File Name]; 		Adds source library to the index
+echo 	Get [Library Name]; 				Adds the target library to the current directory under folder 'lib'
+echo 	Remove [Library Name]; 				Removes the target library from the index
+echo 	List; 						Lists the libraries currently indexed
+echo 	Update;						Updates libraries within the current directory's 'lib' folder
 goto :eof
 
 :add
 set sourceLib=%2
-echo "Adding %sourceLib%"
-xcopy /f /y "%cd%\bin\debug\net8.0\%sourceLib%" "%UserProfile%\Libraries"
+if not "%3"=="" (
+	xcopy /f /y "%cd%\%sourceLib%" "%UserProfile%\Libraries\%3*"
+)
+else (
+	xcopy /f /y "%cd%\%sourceLib%" "%UserProfile%\Libraries"
+)
 goto :eof
 
 :get
